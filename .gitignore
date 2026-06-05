@@ -19,6 +19,7 @@ build/
 # Cloudflare / backend local secrets
 .dev.vars
 .dev.vars.*
+!.dev.vars.example
 .wrangler/
 
 # Local-only notes / private planning (kept out of the public repo)
