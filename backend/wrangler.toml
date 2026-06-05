@@ -1,0 +1,39 @@
+name = "apptly-backend"
+main = "src/index.ts"
+compatibility_date = "2025-02-04"
+# Clerk's @clerk/backend needs Node built-ins (crypto, etc.).
+compatibility_flags = ["nodejs_compat"]
+
+# --- Non-secret config (the Clerk SECRET key is a Workers Secret, never here) ---
+[vars]
+# Comma-separated. Clerk `authorizedParties` + CORS allowlist: the published
+# extension origin and the web domain. Replace with real values before deploy.
+CLERK_AUTHORIZED_PARTIES = "chrome-extension://hkpbmdgpjljlodjhbcfkdaeemlkbaecg,https://app.apptly.example"
+CORS_ALLOWED_ORIGINS = "chrome-extension://hkpbmdgpjljlodjhbcfkdaeemlkbaecg,https://app.apptly.example"
+# Per-user fixed-window rate limit.
+RATE_LIMIT_MAX = "120"
+RATE_LIMIT_WINDOW_MS = "60000"
+
+# --- D1 (relational store) ---
+[[d1_databases]]
+binding = "DB"
+database_name = "apptly"
+# TODO: owner fills after `wrangler d1 create apptly`.
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+migrations_dir = "src/db/migrations"
+
+# --- R2 (document blobs) ---
+[[r2_buckets]]
+binding = "DOCS"
+# TODO: owner fills after `wrangler r2 bucket create apptly-docs`.
+bucket_name = "apptly-docs"
+
+# --- Durable Object: per-user rate limiter ---
+[[durable_objects.bindings]]
+name = "RATE_LIMITER"
+class_name = "RateLimiter"
+
+# SQLite-backed DO class (free-tier capable).
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RateLimiter"]
