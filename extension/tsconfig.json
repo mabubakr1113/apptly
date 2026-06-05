@@ -1,0 +1,11 @@
+{
+  // Extends the tsconfig WXT generates into .wxt/ during `wxt prepare`
+  // (adds entrypoint globs, auto-import types, and the `browser` global).
+  "extends": "./.wxt/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  },
+  // Test + tooling configs are type-checked/run by Vitest, not the app build.
+  // (Excluding vitest.config.ts also sidesteps a duplicate-vite type clash.)
+  "exclude": [".output", "vitest.config.ts", "vitest.setup.ts", "**/*.test.ts", "**/*.test.tsx"]
+}

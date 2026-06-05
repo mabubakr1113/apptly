@@ -1,0 +1,7 @@
+{
+  "name": "@apptly/backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Apptly hosted LLM proxy (Cloudflare Worker). Not implemented until Module 11 - v1 has no backend."
+}
