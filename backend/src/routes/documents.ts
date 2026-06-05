@@ -31,6 +31,18 @@ async function sha256Hex(bytes: ArrayBuffer): Promise<string> {
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
+/**
+ * Builds a safe `Content-Disposition` value. The ASCII `filename` strips
+ * quotes/control chars (which could otherwise corrupt the header or, in some
+ * runtimes, enable header injection); `filename*` carries the full UTF-8 name
+ * per RFC 5987 for clients that support it.
+ */
+function contentDisposition(filename: string): string {
+  const ascii = filename.replace(/["\\\r\n]/g, '_').replace(/[^\x20-\x7e]/g, '_');
+  const encoded = encodeURIComponent(filename);
+  return `attachment; filename="${ascii}"; filename*=UTF-8''${encoded}`;
+}
+
 export const documentRoutes = new Hono<AppBindings>()
   // Upload a document: enforce size + MIME, store blob in R2, metadata in D1.
   .post('/documents', async (c) => {
@@ -68,7 +80,14 @@ export const documentRoutes = new Hono<AppBindings>()
       size: file.size,
       createdAt: new Date().toISOString(),
     };
-    await getDb(c.env).insert(documents).values(row);
+    try {
+      await getDb(c.env).insert(documents).values(row);
+    } catch (err) {
+      // Metadata insert failed after the blob landed in R2 — delete the orphan
+      // so a failed upload doesn't leak unreachable storage, then rethrow.
+      await c.env.DOCS.delete(r2Key).catch(() => {});
+      throw err;
+    }
 
     return c.json({ document: rowToMeta(row) }, 201);
   })
@@ -89,7 +108,7 @@ export const documentRoutes = new Hono<AppBindings>()
     }
 
     c.header('Content-Type', object.httpMetadata?.contentType ?? 'application/octet-stream');
-    c.header('Content-Disposition', `attachment; filename="${row.filename}"`);
+    c.header('Content-Disposition', contentDisposition(row.filename));
     return c.body(object.body);
   })
   // Delete a document (ownership-checked): remove blob then row.

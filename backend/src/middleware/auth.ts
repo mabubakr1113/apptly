@@ -26,7 +26,9 @@ export const authMiddleware: MiddlewareHandler<AppBindings> = async (c, next) =>
   try {
     const claims = await verifyToken(token, {
       secretKey: c.env.CLERK_SECRET_KEY,
-      authorizedParties: c.env.CLERK_AUTHORIZED_PARTIES.split(',').map((s) => s.trim()),
+      authorizedParties: c.env.CLERK_AUTHORIZED_PARTIES.split(',')
+        .map((s) => s.trim())
+        .filter(Boolean),
     });
     if (!claims.sub) {
       return c.json(apiError('unauthorized', 'Token has no subject'), 401);

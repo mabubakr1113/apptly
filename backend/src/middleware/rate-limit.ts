@@ -1,6 +1,7 @@
 import { apiError } from '@apptly/shared';
 import type { MiddlewareHandler } from 'hono';
 import type { AppBindings } from '../env';
+import { logger } from '../logger';
 
 /**
  * Per-user fixed-window rate limit, backed by the RateLimiter Durable Object
@@ -11,6 +12,13 @@ export const rateLimitMiddleware: MiddlewareHandler<AppBindings> = async (c, nex
   const userId = c.get('userId');
   const limit = Number(c.env.RATE_LIMIT_MAX);
   const windowMs = Number(c.env.RATE_LIMIT_WINDOW_MS);
+
+  // Fail closed on misconfiguration: a NaN limit/window would silently disable
+  // rate limiting and emit invalid RateLimit headers, so reject with a 500.
+  if (!Number.isFinite(limit) || limit <= 0 || !Number.isFinite(windowMs) || windowMs <= 0) {
+    logger.error('invalid rate limit config', `max=${c.env.RATE_LIMIT_MAX} window=${c.env.RATE_LIMIT_WINDOW_MS}`);
+    return c.json(apiError('internal_error', 'Rate limiter misconfigured'), 500);
+  }
 
   const stub = c.env.RATE_LIMITER.get(c.env.RATE_LIMITER.idFromName(userId));
   const { allowed, remaining, resetAt } = await stub.increment(limit, windowMs);
