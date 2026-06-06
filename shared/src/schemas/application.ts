@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { nonEmptyString, urlSchema } from './common';
+import { nonEmptyString, urlSchema } from '@apptly/shared/schemas/common';
 
 /**
  * A single tracked job application. The backend owns `id` and `updatedAt`;
@@ -7,15 +7,17 @@ import { nonEmptyString, urlSchema } from './common';
  * (everything optional) to update.
  */
 
-export const applicationStatus = z.enum([
-  'saved',
-  'applied',
-  'screening',
-  'interview',
-  'offer',
-  'rejected',
-  'withdrawn',
-]);
+export enum ApplicationStatusValue {
+  Saved = 'saved',
+  Applied = 'applied',
+  Screening = 'screening',
+  Interview = 'interview',
+  Offer = 'offer',
+  Rejected = 'rejected',
+  Withdrawn = 'withdrawn',
+}
+
+export const applicationStatus = z.nativeEnum(ApplicationStatusValue);
 
 export const applicationRecordSchema = z.object({
   id: nonEmptyString,
@@ -38,7 +40,7 @@ export const applicationRecordSchema = z.object({
 /** Payload to create a record: server owns `id` and `updatedAt`. */
 export const applicationCreateSchema = applicationRecordSchema
   .omit({ id: true, updatedAt: true })
-  .extend({ status: applicationStatus.default('saved') });
+  .extend({ status: applicationStatus.default(ApplicationStatusValue.Saved) });
 
 /** Payload to patch a record: every client-settable field is optional. */
 export const applicationPatchSchema = applicationCreateSchema.partial();

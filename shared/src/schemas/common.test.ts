@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { emailSchema, nonEmptyString, urlSchema } from './common';
+import { emailSchema, nonEmptyString, urlSchema } from '@apptly/shared/schemas/common';
 
 describe('nonEmptyString', () => {
   it('accepts non-empty input and trims it', () => {
