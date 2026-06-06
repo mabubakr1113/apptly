@@ -1,0 +1,7 @@
+# Local backend secrets for `wrangler dev`. Copy to `.dev.vars` (git-ignored).
+# In production this is set with `wrangler secret put CLERK_SECRET_KEY`.
+#
+# The Clerk SECRET key (sk_...) verifies session tokens server-side. It must
+# NEVER ship in a client bundle or be committed. Only the publishable key
+# (pk_...) is client-side (see extension/.env.example).
+CLERK_SECRET_KEY=sk_test_your_secret_key_here

@@ -7,7 +7,7 @@ Apptly is a cross-browser extension that auto-fills job applications from your s
 - 🧠 **Smart autofill** - generic form engine + per-ATS adapters (Greenhouse, Lever to start)
 - ✍️ **Tailoring** - CV keyword optimization + AI cover-letter generation per job
 - 📋 **Tracker** - auto-logs company, role, link, date, status, and the exact docs you sent
-- 🔒 **Local-first** - v1 stores everything on-device; bring your own API key or use a hosted proxy
+- 🔒 **Local cache + secure sync** - on-device cache with authenticated cloud sync (Clerk + Cloudflare D1/R2); bring your own API key or use a hosted proxy
 - ✅ **Review-then-submit by default** - auto-submit is an opt-in toggle
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the branch + PR workflow.
@@ -16,7 +16,7 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the branch + PR workflow.
 
 ```
 extension/   # Frontend - the MV3 browser extension (WXT + React + TS)
-backend/     # Backend - Cloudflare Worker proxy (empty until Module 11)
+backend/     # Backend - Cloudflare Workers sync API (Hono + D1 + R2, Clerk-authenticated)
 shared/      # zod schemas + types shared by both (the FE↔BE contract)
 ```
 

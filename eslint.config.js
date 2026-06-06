@@ -7,6 +7,7 @@ export default tseslint.config(
       '**/node_modules/**',
       '**/.wxt/**',
       '**/.output/**',
+      '**/.wrangler/**',
       '**/dist/**',
       '**/coverage/**',
       '**/*.d.ts',
