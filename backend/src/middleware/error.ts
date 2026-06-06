@@ -1,8 +1,8 @@
 import { apiError } from '@apptly/shared';
 import type { ErrorHandler, NotFoundHandler } from 'hono';
 import { HTTPException } from 'hono/http-exception';
-import type { AppBindings } from '../env';
-import { logger } from '../logger';
+import type { AppBindings } from '@apptly/backend/env';
+import { logger } from '@apptly/backend/logger';
 
 /** Uniform 404 in the shared apiError shape. */
 export const notFoundHandler: NotFoundHandler<AppBindings> = (c) =>
