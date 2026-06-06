@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { applicationRecordSchema } from './application';
-import { documentSchema } from './document';
-import { profileSchema } from './profile';
+import { applicationRecordSchema } from '@apptly/shared/schemas/application';
+import { documentSchema } from '@apptly/shared/schemas/document';
+import { profileSchema } from '@apptly/shared/schemas/profile';
 
 /**
  * Request/response envelopes shared by the front-end and backend so both parse

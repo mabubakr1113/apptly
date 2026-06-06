@@ -1,5 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
-import type { Env } from '../env';
+import type { Env } from '@apptly/backend/env';
 
 export interface RateLimitResult {
   allowed: boolean;

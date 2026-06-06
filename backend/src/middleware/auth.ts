@@ -1,10 +1,10 @@
 import { verifyToken } from '@clerk/backend';
 import { apiError } from '@apptly/shared';
 import type { MiddlewareHandler } from 'hono';
-import { getDb } from '../db/client';
-import { users } from '../db/schema';
-import type { AppBindings } from '../env';
-import { logger } from '../logger';
+import { getDb } from '@apptly/backend/db/client';
+import { users } from '@apptly/backend/db/schema';
+import type { AppBindings } from '@apptly/backend/env';
+import { logger } from '@apptly/backend/logger';
 
 /**
  * Verifies the Clerk session token on every request and derives the user id

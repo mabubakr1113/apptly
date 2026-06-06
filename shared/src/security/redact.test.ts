@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { redactSecret } from './redact';
+import { redactSecret } from '@apptly/shared/security/redact';
 
 // NOTE: the token-like strings below are intentionally fake placeholders
 // (they contain "EXAMPLE"/"FAKE") so secret scanners do not flag this file.

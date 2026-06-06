@@ -4,12 +4,12 @@ type Level = 'debug' | 'info' | 'warn' | 'error';
 
 const PREFIX = '[apptly]';
 
-function emit(level: Level, args: readonly unknown[]): void {
+const emit = (level: Level, args: readonly unknown[]): void => {
   // Safety net: scrub anything that looks like a secret out of string args
   // before it reaches the console. Code should still avoid logging PII/keys.
   const safe = args.map((arg) => (typeof arg === 'string' ? redactSecret(arg) : arg));
   console[level](PREFIX, ...safe);
-}
+};
 
 /**
  * Project-wide logger. `debug` is suppressed in production builds; all levels

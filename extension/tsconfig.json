@@ -3,7 +3,14 @@
   // (adds entrypoint globs, auto-import types, and the `browser` global).
   "extends": "./.wxt/tsconfig.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "..",
+    "paths": {
+      "@apptly/shared/*": ["shared/src/*"],
+      "@apptly/features/*": ["features/src/*"],
+      "@apptly/backend/*": ["backend/src/*"],
+      "@apptly/extension/*": ["extension/*"]
+    }
   },
   // Test + tooling configs are type-checked/run by Vitest, not the app build.
   // (Excluding vitest.config.ts also sidesteps a duplicate-vite type clash.)

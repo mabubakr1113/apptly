@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { logger } from './logger';
+import { logger } from '@apptly/extension/lib/logger';
 
 afterEach(() => {
   vi.restoreAllMocks();

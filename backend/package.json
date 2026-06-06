@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Apptly sync API: Cloudflare Worker (Hono) verifying Clerk tokens, storing per-user data in D1 + R2.",
+  "exports": {
+    "./*": "./src/*"
+  },
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",

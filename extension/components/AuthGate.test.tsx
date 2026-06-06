@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { Box } from '@apptly/ui';
 
 // Mutable, hoisted auth state so each test can drive useAuth's return value.
 const auth = vi.hoisted(() => ({
@@ -15,7 +16,7 @@ vi.mock('@clerk/chrome-extension', () => ({
 
 vi.mock('./AuthScreen', () => ({ AuthScreen: () => 'AuthScreen' }));
 
-import { AuthGate } from './AuthGate';
+import { AuthGate } from '@apptly/extension/components/AuthGate';
 
 const KEY = 'VITE_CLERK_PUBLISHABLE_KEY';
 
@@ -29,13 +30,12 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 
-function renderGate() {
-  return render(
+const renderGate = () =>
+  render(
     <AuthGate>
-      <div>App content</div>
+      <Box>App content</Box>
     </AuthGate>,
   );
-}
 
 describe('AuthGate', () => {
   it('shows a setup notice when the publishable key is missing', () => {

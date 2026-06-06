@@ -1,0 +1,35 @@
+{
+  "name": "@apptly/features",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Apptly shared feature layer: the sync API client, react-query hooks, and feature components (Profile, Tracker, Documents). Consumed by the extension and the web app.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@apptly/shared": "workspace:*",
+    "@apptly/ui": "workspace:*",
+    "@hookform/resolvers": "^3.9.1",
+    "@tanstack/react-query": "^5.62.7",
+    "@tanstack/react-table": "^8.20.6",
+    "@ts-rest/core": "^3.52.1",
+    "@ts-rest/react-query": "^3.52.1",
+    "lucide-react": "^0.469.0",
+    "react-hook-form": "^7.54.2",
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1"
+  }
+}

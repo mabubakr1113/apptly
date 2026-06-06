@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Apptly browser extension (Manifest V3, cross-browser via WXT).",
+  "exports": {
+    "./*": "./*"
+  },
   "scripts": {
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
@@ -13,15 +16,13 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
+    "@apptly/features": "workspace:*",
     "@apptly/shared": "workspace:*",
+    "@apptly/ui": "workspace:*",
     "@clerk/chrome-extension": "^3.1.32",
-    "@radix-ui/react-slot": "^1.2.4",
     "@tailwindcss/vite": "^4.3.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.0",
     "webextension-polyfill": "^0.12.0"
   },

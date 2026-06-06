@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { profileSchema } from './profile';
+import { profileSchema } from '@apptly/shared/schemas/profile';
 
 const minimalProfile = {
   fullName: 'Ada Lovelace',

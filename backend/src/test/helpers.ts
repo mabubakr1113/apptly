@@ -1,6 +1,6 @@
 import { env } from 'cloudflare:test';
-import app from '../index';
-import { __resetVerify, __setVerify, verifyState } from './clerk-stub';
+import app from '@apptly/backend/index';
+import { __resetVerify, __setVerify, verifyState } from '@apptly/backend/test/clerk-stub';
 
 const BASE = 'https://test.local';
 
