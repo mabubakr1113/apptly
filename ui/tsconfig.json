@@ -1,0 +1,6 @@
+{
+  "extends": "../tsconfig.base.json",
+  "include": ["src"],
+  // Tests are type-checked/run by Vitest (esbuild), not the app typecheck.
+  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
+}

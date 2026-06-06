@@ -1,5 +1,6 @@
 import { defineWorkspace } from 'vitest/config';
 
 // Each package supplies its own vitest config (node env for shared,
-// happy-dom + WXT fake-browser for the extension, Workers pool for the backend).
-export default defineWorkspace(['shared', 'extension', 'backend']);
+// happy-dom for the UI design system, happy-dom + WXT fake-browser for the
+// extension, Workers pool for the backend).
+export default defineWorkspace(['shared', 'ui', 'extension', 'backend']);
