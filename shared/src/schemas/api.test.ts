@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { apiError, apiErrorSchema, profileResponseSchema } from './api';
+import { apiError, apiErrorSchema, profileResponseSchema } from '@apptly/shared/schemas/api';
 
 describe('apiErrorSchema', () => {
   it('accepts a well-formed error envelope', () => {

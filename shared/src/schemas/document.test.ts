@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { ALLOWED_DOCUMENT_MIME, MAX_DOCUMENT_BYTES, documentSchema } from './document';
+import {
+  ALLOWED_DOCUMENT_MIME,
+  MAX_DOCUMENT_BYTES,
+  documentSchema,
+} from '@apptly/shared/schemas/document';
 
 const validDoc = {
   id: 'doc_1',
