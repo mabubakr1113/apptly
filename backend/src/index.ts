@@ -1,13 +1,13 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import type { AppBindings } from './env';
-import { authMiddleware } from './middleware/auth';
-import { errorHandler, notFoundHandler } from './middleware/error';
-import { rateLimitMiddleware } from './middleware/rate-limit';
-import { applicationRoutes } from './routes/applications';
-import { documentRoutes } from './routes/documents';
-import { health } from './routes/health';
-import { profile } from './routes/profile';
+import type { AppBindings } from '@apptly/backend/env';
+import { authMiddleware } from '@apptly/backend/middleware/auth';
+import { errorHandler, notFoundHandler } from '@apptly/backend/middleware/error';
+import { rateLimitMiddleware } from '@apptly/backend/middleware/rate-limit';
+import { applicationRoutes } from '@apptly/backend/routes/applications';
+import { documentRoutes } from '@apptly/backend/routes/documents';
+import { health } from '@apptly/backend/routes/health';
+import { profile } from '@apptly/backend/routes/profile';
 
 const app = new Hono<AppBindings>();
 
@@ -36,4 +36,4 @@ app.route('/v1', applicationRoutes);
 app.route('/v1', documentRoutes);
 
 export default app;
-export { RateLimiter } from './durable/rate-limiter';
+export { RateLimiter } from '@apptly/backend/durable/rate-limiter';
