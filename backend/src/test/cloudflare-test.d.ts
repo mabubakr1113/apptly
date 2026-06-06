@@ -1,5 +1,5 @@
 import type { D1Migration } from 'cloudflare:test';
-import type { Env } from '../env';
+import type { Env } from '@apptly/backend/env';
 
 declare module 'cloudflare:test' {
   // The test env carries all Worker bindings plus the migrations the setup applies.

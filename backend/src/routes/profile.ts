@@ -1,9 +1,9 @@
 import { profileSchema } from '@apptly/shared';
 import { eq } from 'drizzle-orm';
 import { Hono } from 'hono';
-import { getDb } from '../db/client';
-import { profiles } from '../db/schema';
-import type { AppBindings } from '../env';
+import { getDb } from '@apptly/backend/db/client';
+import { profiles } from '@apptly/backend/db/schema';
+import type { AppBindings } from '@apptly/backend/env';
 
 export const profile = new Hono<AppBindings>()
   // The user's profile, or 404 if they have not saved one yet.

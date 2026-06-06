@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { appFetch } from '../test/helpers';
+import { appFetch } from '@apptly/backend/test/helpers';
 
 describe('GET /v1/health', () => {
   it('returns 200 without authentication', async () => {

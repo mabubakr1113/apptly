@@ -1,18 +1,17 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { AuthGate } from '../../components/AuthGate';
+import { Box, Heading, Text } from '@apptly/ui';
+import { AuthGate } from '@apptly/extension/components/AuthGate';
 import '../../assets/styles.css';
 
-function SidePanelApp() {
-  return (
-    <main className="p-4">
-      <h1 className="text-lg font-semibold">Apptly</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Side panel scaffold. The Analyze &amp; Fill flow arrives in Module 9.
-      </p>
-    </main>
-  );
-}
+const SidePanelApp = () => (
+  <Box as="main" className="p-4">
+    <Heading className="text-lg font-semibold">Apptly</Heading>
+    <Text className="mt-1 text-sm text-muted-foreground">
+      Side panel scaffold. The Analyze &amp; Fill flow arrives in Module 9.
+    </Text>
+  </Box>
+);
 
 const root = document.getElementById('root');
 if (root) {

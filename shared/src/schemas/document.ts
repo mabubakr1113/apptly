@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { nonEmptyString } from './common';
+import { nonEmptyString } from '@apptly/shared/schemas/common';
 
 /**
  * Document (resume / cover letter / tailored CV) metadata. The blob itself
@@ -17,7 +17,13 @@ export const ALLOWED_DOCUMENT_MIME = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ] as const;
 
-export const documentKind = z.enum(['resume', 'cover_letter', 'tailored_cv']);
+export enum DocumentKindValue {
+  Resume = 'resume',
+  CoverLetter = 'cover_letter',
+  TailoredCv = 'tailored_cv',
+}
+
+export const documentKind = z.nativeEnum(DocumentKindValue);
 
 export const documentSchema = z.object({
   id: nonEmptyString,

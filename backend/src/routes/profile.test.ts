@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { asUser, authedFetch, resetAuth } from '../test/helpers';
+import { asUser, authedFetch, resetAuth } from '@apptly/backend/test/helpers';
 
 const sampleProfile = { fullName: 'Ada Lovelace', email: 'ada@example.com' };
 

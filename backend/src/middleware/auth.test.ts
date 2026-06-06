@@ -7,7 +7,7 @@ import {
   authedFetch,
   resetAuth,
   verifyCallCount,
-} from '../test/helpers';
+} from '@apptly/backend/test/helpers';
 
 beforeEach(resetAuth);
 

@@ -1,4 +1,4 @@
-import type { RateLimiter } from './durable/rate-limiter';
+import type { RateLimiter } from '@apptly/backend/durable/rate-limiter';
 
 /** Worker bindings + vars. Mirrors the bindings declared in wrangler.toml. */
 export interface Env {

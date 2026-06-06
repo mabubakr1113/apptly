@@ -7,7 +7,7 @@ vi.mock('@clerk/chrome-extension', () => ({
   SignUp: () => 'Clerk SignUp',
 }));
 
-import { AuthScreen } from './AuthScreen';
+import { AuthScreen } from '@apptly/extension/components/AuthScreen';
 
 describe('AuthScreen', () => {
   it('shows sign-in by default', () => {

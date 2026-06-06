@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { emailSchema, nonEmptyString, urlSchema } from './common';
+import { emailSchema, nonEmptyString, urlSchema } from '@apptly/shared/schemas/common';
 
 /**
  * The user's reusable application profile: the data Apptly uses to autofill job
@@ -32,7 +32,15 @@ export const educationEntrySchema = z.object({
  * decline-to-answer so we never volunteer sensitive demographic data the user
  * has not explicitly chosen to share.
  */
-export const voluntaryAnswer = z.enum(['decline', 'yes', 'no']).default('decline');
+export enum VoluntaryAnswerValue {
+  Decline = 'decline',
+  Yes = 'yes',
+  No = 'no',
+}
+
+export const voluntaryAnswer = z
+  .nativeEnum(VoluntaryAnswerValue)
+  .default(VoluntaryAnswerValue.Decline);
 
 export const eeoAnswersSchema = z
   .object({
@@ -41,7 +49,12 @@ export const eeoAnswersSchema = z
     veteranStatus: voluntaryAnswer,
     disabilityStatus: voluntaryAnswer,
   })
-  .default({});
+  .default({
+    gender: VoluntaryAnswerValue.Decline,
+    race: VoluntaryAnswerValue.Decline,
+    veteranStatus: VoluntaryAnswerValue.Decline,
+    disabilityStatus: VoluntaryAnswerValue.Decline,
+  });
 
 /** A reusable custom question/answer the user keeps for application forms. */
 export const customQASchema = z.object({

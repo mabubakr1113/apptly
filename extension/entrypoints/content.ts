@@ -1,4 +1,4 @@
-import { logger } from '../lib/logger';
+import { logger } from '@apptly/extension/lib/logger';
 
 // Module 0 placeholder. Matches are intentionally narrow (example.com) to keep
 // install-time permissions minimal; the real job-site matching strategy (and

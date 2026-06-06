@@ -1,15 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import {
+  ApplicationStatusValue,
   applicationCreateSchema,
   applicationPatchSchema,
   applicationRecordSchema,
-} from './application';
+} from '@apptly/shared/schemas/application';
 
 const fullRecord = {
   id: 'app_1',
   company: 'Acme Corp',
   position: 'Senior Engineer',
-  status: 'applied',
+  status: ApplicationStatusValue.Applied,
   updatedAt: '2026-06-05T12:00:00.000Z',
 };
 
@@ -40,7 +41,7 @@ describe('applicationRecordSchema', () => {
 describe('applicationCreateSchema', () => {
   it('defaults status to saved and does not require server-owned fields', () => {
     const parsed = applicationCreateSchema.parse({ company: 'Acme', position: 'Eng' });
-    expect(parsed.status).toBe('saved');
+    expect(parsed.status).toBe(ApplicationStatusValue.Saved);
     expect('id' in parsed).toBe(false);
     expect('updatedAt' in parsed).toBe(false);
   });
@@ -48,7 +49,9 @@ describe('applicationCreateSchema', () => {
 
 describe('applicationPatchSchema', () => {
   it('accepts a partial update', () => {
-    expect(applicationPatchSchema.parse({ status: 'interview' }).status).toBe('interview');
+    expect(applicationPatchSchema.parse({ status: ApplicationStatusValue.Interview }).status).toBe(
+      ApplicationStatusValue.Interview,
+    );
   });
 
   it('accepts an empty patch', () => {

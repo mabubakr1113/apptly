@@ -11,7 +11,10 @@ export const urlSchema = z
   .string()
   .trim()
   .url('Invalid URL')
-  .refine((u) => u.startsWith('http://') || u.startsWith('https://'), 'URL must start with http:// or https://');
+  .refine(
+    (u) => u.startsWith('http://') || u.startsWith('https://'),
+    'URL must start with http:// or https://',
+  );
 
 export type Email = z.infer<typeof emailSchema>;
 export type Url = z.infer<typeof urlSchema>;
