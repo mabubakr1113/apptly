@@ -1,3 +1,8 @@
+// These are interactive client components (Radix + hooks/context). The directive
+// marks them as a Client Component boundary for React Server Components consumers
+// (the Next.js web app); Vite/WXT (the extension) treat it as a harmless no-op.
+'use client';
+
 // Utilities
 export { cn } from './lib/cn';
 

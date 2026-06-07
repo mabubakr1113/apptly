@@ -1,3 +1,8 @@
+// These feature surfaces use React Query hooks/context and are Client Components.
+// The directive marks the boundary for RSC consumers (the Next.js web app); the
+// extension's Vite/WXT bundler treats it as a harmless no-op.
+'use client';
+
 // Data layer
 export { AppDataProvider, type AppDataProviderProps } from '@apptly/features/lib/query/provider';
 export { ApiContext, useApi } from '@apptly/features/lib/query/use-api';
