@@ -1,0 +1,9 @@
+/* Shared design-system theme (tokens, base layer, Tailwind v4 import) — the same
+   stylesheet the extension uses, so the web app matches the extension look. */
+@import '@apptly/ui/styles/theme.css';
+
+/* Scan the web app's own files and the shared feature components for class usage
+   so their utilities are emitted. Paths are relative to this file (web/app). */
+@source '.';
+@source '../components';
+@source '../../features/src';
