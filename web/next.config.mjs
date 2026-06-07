@@ -11,6 +11,20 @@ const nextConfig = {
     // Next's default list; the workspace barrels are not, so list them.
     optimizePackageImports: ['lucide-react', '@apptly/ui', '@apptly/features'],
   },
+  // Static security headers. The CSP is per-request (nonce) so it lives in
+  // middleware.ts, not here.
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
