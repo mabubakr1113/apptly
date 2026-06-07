@@ -3,12 +3,17 @@ import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
 
 // Frontend packages that follow the "components + arrow functions" house style.
-const FRONTEND_GLOBS = ['ui/**/*.{ts,tsx}', 'features/**/*.{ts,tsx}', 'extension/**/*.{ts,tsx}'];
+const FRONTEND_GLOBS = [
+  'ui/**/*.{ts,tsx}',
+  'features/**/*.{ts,tsx}',
+  'extension/**/*.{ts,tsx}',
+  'web/**/*.{ts,tsx}',
+];
 
 // App code (feature + extension surfaces) must compose shadcn/custom components,
 // never raw HTML. The design-system primitives in `ui/` are the one allowed
 // place to render bare elements, so they are intentionally excluded here.
-const APP_GLOBS = ['features/**/*.tsx', 'extension/**/*.tsx'];
+const APP_GLOBS = ['features/**/*.tsx', 'extension/**/*.tsx', 'web/**/*.tsx'];
 
 // Lowercase JSX identifiers are intrinsic HTML elements; capitalized ones are
 // components. Flag the former so only components are rendered in app code.
@@ -24,6 +29,7 @@ export default tseslint.config(
       '**/node_modules/**',
       '**/.wxt/**',
       '**/.output/**',
+      '**/.next/**',
       '**/.wrangler/**',
       '**/dist/**',
       '**/coverage/**',
@@ -54,6 +60,22 @@ export default tseslint.config(
     files: APP_GLOBS,
     rules: {
       'no-restricted-syntax': ['error', NO_RAW_HTML],
+    },
+  },
+  {
+    // Next.js requires the root layout to render literal <html>/<body>; they
+    // have no component equivalent, so the no-raw-HTML rule can't apply here.
+    files: ['web/app/layout.tsx'],
+    rules: {
+      'no-restricted-syntax': 'off',
+    },
+  },
+  {
+    // Test files may render bare elements to stub framework modules (e.g. a
+    // next/link mock), which is fine — they don't ship UI to users.
+    files: ['web/**/*.test.{ts,tsx}'],
+    rules: {
+      'no-restricted-syntax': 'off',
     },
   },
   // Keep ESLint out of Prettier's lane (must stay last).
