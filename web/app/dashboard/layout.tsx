@@ -10,9 +10,12 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => (
     <Box className="flex min-h-screen flex-col">
       <Box
         as="header"
-        className="sticky top-0 z-10 flex items-center justify-between border-b bg-background px-6 py-3"
+        className="sticky top-0 z-10 flex items-center justify-between border-b bg-background/80 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60"
       >
-        <Link href="/" className="text-lg font-semibold tracking-tight">
+        <Link
+          href="/"
+          className="text-lg font-semibold tracking-tight transition-colors hover:text-primary"
+        >
           Apptly
         </Link>
         <UserButton />

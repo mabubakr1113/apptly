@@ -28,11 +28,12 @@ describe('DashboardNav', () => {
     nav.pathname = '/dashboard/profile';
     render(<DashboardNav />);
 
-    // Exact token check: the inactive link carries `hover:bg-accent`, so a
-    // substring match would give a false positive.
-    expect(screen.getByRole('link', { name: 'Profile' }).classList.contains('bg-accent')).toBe(true);
-    expect(screen.getByRole('link', { name: 'Tracker' }).classList.contains('bg-accent')).toBe(
-      false,
-    );
+    // Active link carries the branded `bg-primary/10`; inactive links don't.
+    expect(
+      screen.getByRole('link', { name: 'Profile' }).classList.contains('bg-primary/10'),
+    ).toBe(true);
+    expect(
+      screen.getByRole('link', { name: 'Tracker' }).classList.contains('bg-primary/10'),
+    ).toBe(false);
   });
 });
