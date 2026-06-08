@@ -26,6 +26,41 @@ describe('document upload', () => {
     expect(body.document.contentHash).toHaveLength(64);
   });
 
+  it('accepts a JSON-stringified kind (how the ts-rest client sends it)', async () => {
+    asUser('user_d1b');
+    // ts-rest's client JSON-stringifies non-file multipart fields, so `kind`
+    // arrives quoted. The route must still parse it.
+    const res = await authedFetch('/v1/documents', {
+      method: 'POST',
+      body: uploadForm(pdf(), JSON.stringify('cover_letter')),
+    });
+    expect(res.status).toBe(201);
+    const body = (await res.json()) as { document: { kind: string } };
+    expect(body.document.kind).toBe('cover_letter');
+  });
+
+  it('lists only the caller’s documents', async () => {
+    asUser('user_dl1');
+    await authedFetch('/v1/documents', { method: 'POST', body: uploadForm(pdf()) });
+    asUser('user_dl1');
+    await authedFetch('/v1/documents', {
+      method: 'POST',
+      body: uploadForm(pdf(), 'cover_letter'),
+    });
+
+    asUser('user_dl1');
+    const res = await authedFetch('/v1/documents');
+    expect(res.status).toBe(200);
+    const { documents } = (await res.json()) as { documents: { kind: string }[] };
+    expect(documents).toHaveLength(2);
+    expect(documents.map((d) => d.kind).sort()).toEqual(['cover_letter', 'resume']);
+
+    // A different user sees none of them.
+    asUser('user_dl2');
+    const other = await authedFetch('/v1/documents');
+    expect(((await other.json()) as { documents: unknown[] }).documents).toHaveLength(0);
+  });
+
   it('rejects a disallowed MIME type (415)', async () => {
     asUser('user_d2');
     const file = new File(['hello'], 'notes.txt', { type: 'text/plain' });
