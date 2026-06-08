@@ -66,6 +66,7 @@ export const DocumentUploadView = ({
     <Button type="submit" disabled={isUploading}>
       {isUploading ? DOCUMENT_UPLOAD_COPY.uploading : DOCUMENT_UPLOAD_COPY.upload}
     </Button>
+    <Text className="text-xs text-muted-foreground sm:col-span-3">{DOCUMENT_UPLOAD_COPY.hint}</Text>
     {error ? <Text className="text-sm text-destructive sm:col-span-3">{error}</Text> : null}
   </FormRoot>
 );
