@@ -5,3 +5,6 @@ export const formatBytes = (bytes: number): string => {
 };
 
 export const formatDate = (value: string): string => new Date(value).toLocaleDateString();
+
+/** PDFs can render inline in the preview; other types (DOCX) offer download. */
+export const isPdf = (filename: string): boolean => filename.toLowerCase().endsWith('.pdf');
