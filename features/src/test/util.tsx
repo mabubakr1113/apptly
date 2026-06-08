@@ -24,6 +24,16 @@ export const makeApi = (overrides: Partial<ApiClient> = {}): ApiClient => ({
   ...overrides,
 });
 
+// Mirror the backend: ts-rest JSON-stringifies non-file multipart fields.
+const parseField = (value: FormDataEntryValue | null): unknown => {
+  if (typeof value !== 'string') return value;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+};
+
 const json = (status: number, body?: unknown): Response =>
   new Response(body === undefined ? null : JSON.stringify(body), {
     status,
@@ -58,10 +68,15 @@ const responseFor = async (api: ApiClient, input: RequestInfo | URL, init?: Requ
     return json(201, {
       document: await api.uploadDocument({
         file: init.body.get('file') as File,
-        kind: init.body.get('kind') as DocumentKind,
+        kind: parseField(init.body.get('kind')) as DocumentKind,
       }),
     });
   }
+  if (url.pathname.startsWith('/v1/documents/') && method === 'GET')
+    return new Response(new Blob(['%PDF-1.4 test'], { type: 'application/pdf' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/pdf' },
+    });
   if (url.pathname.startsWith('/v1/documents/') && method === 'DELETE')
     return api.deleteDocument(id).then(() => json(204));
   return json(404, { error: { code: 'not_found', message: 'Not found' } });
