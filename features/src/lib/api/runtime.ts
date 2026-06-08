@@ -44,3 +44,16 @@ export const createApiFetcher =
 
     return { status: res.status, body: await readBody(res), headers: res.headers };
   };
+
+/**
+ * Authenticated GET that returns the raw response blob — used for document
+ * preview/download, where the body is a PDF/DOCX rather than JSON. Uses the same
+ * runtime token + base URL as {@link createApiFetcher}.
+ */
+export const fetchBlob = async (path: string): Promise<Blob> => {
+  const token = await runtime?.getToken?.();
+  if (!token) throw new ApiError(401, 'no_token', 'Not signed in');
+  const res = await fetch(resolveUrl(path), { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) throw new ApiError(res.status, 'fetch_failed', 'Could not load document');
+  return res.blob();
+};
