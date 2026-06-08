@@ -9,15 +9,18 @@ export interface AuthScreenViewProps {
   redirectUrl: string;
 }
 
-export const AuthScreenView = ({ mode, toggleMode, redirectUrl }: AuthScreenViewProps) => (
-  <Box className="flex min-w-auth flex-col items-center gap-3 p-4">
-    {mode === AuthMode.SignIn ? (
-      <SignIn routing="hash" fallbackRedirectUrl={redirectUrl} />
-    ) : (
-      <SignUp routing="hash" fallbackRedirectUrl={redirectUrl} />
-    )}
-    <Button variant="link" size="sm" onClick={toggleMode}>
-      {mode === AuthMode.SignIn ? EXTENSION_COPY.signUp : EXTENSION_COPY.signIn}
-    </Button>
-  </Box>
-);
+export const AuthScreenView = ({ mode, toggleMode, redirectUrl }: AuthScreenViewProps) => {
+  const isSignIn = mode === AuthMode.SignIn;
+  return (
+    <Box className="flex min-w-auth flex-col items-center gap-3 p-4">
+      {isSignIn ? (
+        <SignIn routing="hash" fallbackRedirectUrl={redirectUrl} />
+      ) : (
+        <SignUp routing="hash" fallbackRedirectUrl={redirectUrl} />
+      )}
+      <Button variant="link" size="sm" onClick={toggleMode}>
+        {isSignIn ? EXTENSION_COPY.signUp : EXTENSION_COPY.signIn}
+      </Button>
+    </Box>
+  );
+};
