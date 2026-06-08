@@ -1,5 +1,5 @@
 import { flexRender, type Table as TableInstance } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@apptly/ui';
+import { Box, Spinner, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@apptly/ui';
 import { DATA_TABLE_SORT_MARKS } from '@apptly/features/components/DataTable/copy';
 
 export interface RenderDataTableProps<TData> {
@@ -37,7 +37,7 @@ export const renderDataTable = <TData,>({
     <TableBody>
       {table.getRowModel().rows.length ? (
         table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
+          <TableRow key={row.id} className="transition-colors hover:bg-muted/50">
             {row.getVisibleCells().map((cell) => (
               <TableCell key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -51,7 +51,13 @@ export const renderDataTable = <TData,>({
             colSpan={table.getAllLeafColumns().length}
             className="h-24 text-center text-muted-foreground"
           >
-            {isLoading ? loadingText : emptyText}
+            {isLoading ? (
+              <Box className="flex items-center justify-center gap-2">
+                <Spinner /> {loadingText}
+              </Box>
+            ) : (
+              emptyText
+            )}
           </TableCell>
         </TableRow>
       )}

@@ -1,45 +1,50 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { Profile } from '@apptly/shared';
 import { toast } from '@apptly/ui';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useProfile, useUpdateProfile } from '@apptly/features/lib/hooks/use-profile';
-import {
-  EMPTY_PROFILE_FORM,
-  profileFormSchema,
-  toFormValues,
-  toProfile,
-  type ProfileFormValues,
-} from '@apptly/features/components/ProfileForm/helpers';
+import { useUpdateProfile } from '@apptly/features/lib/hooks/use-profile';
+import { profileFormSchema, type ProfileFormValues } from '@apptly/features/components/ProfileForm/helpers';
+import { toFormValues, toProfile } from '@apptly/features/components/ProfileForm/mappers';
+import { downloadProfileJson, readProfileJson } from '@apptly/features/components/ProfileForm/io';
 
-export const useProfileForm = () => {
-  const query = useProfile();
+/**
+ * Drives the profile form. The form is created with the loaded profile as its
+ * `defaultValues` (the container only mounts this once the profile has loaded),
+ * so every field — including controlled Radix Selects — initialises with the
+ * right value. Hydrating via a post-mount `reset` instead races the controlled
+ * Selects in a large form and leaves them blank.
+ */
+export const useProfileForm = (profile: Profile | null) => {
   const mutation = useUpdateProfile();
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: EMPTY_PROFILE_FORM,
+    defaultValues: toFormValues(profile),
   });
-
-  // Hydrate the form once the profile loads (reset keeps it pristine).
-  const { reset } = form;
-  useEffect(() => {
-    if (query.data !== undefined) reset(toFormValues(query.data));
-  }, [query.data, reset]);
 
   const onSubmit = form.handleSubmit((values) => {
     mutation.mutate(
-      { body: toProfile(values, query.data ?? null) },
-      {
-        onSuccess: () => toast.success('Profile saved'),
-      },
+      { body: toProfile(values, profile) },
+      { onSuccess: () => toast.success('Profile saved') },
     );
   });
 
-  return {
-    form,
-    onSubmit,
-    isLoading: query.isLoading,
-    loadError: query.error,
-    isSaving: mutation.isPending,
+  const onExport = () => {
+    try {
+      downloadProfileJson(toProfile(form.getValues(), profile));
+    } catch {
+      toast.error('Fill in your name and email before exporting.');
+    }
   };
+
+  const onImport = async (file: File) => {
+    try {
+      form.reset(toFormValues(await readProfileJson(file)));
+      toast.success('Profile imported — review and save to keep it.');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Could not import that file.');
+    }
+  };
+
+  return { form, onSubmit, onExport, onImport, isSaving: mutation.isPending };
 };

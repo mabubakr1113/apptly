@@ -26,6 +26,20 @@ function rowToMeta(row: Row): DocumentMeta {
   };
 }
 
+/**
+ * ts-rest's client JSON-stringifies non-file multipart fields, so `kind` arrives
+ * as `"resume"` (quoted). Accept both the quoted form and a raw string so direct
+ * multipart posts (curl, tests) work too.
+ */
+function parseField(value: unknown): unknown {
+  if (typeof value !== 'string') return value;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+}
+
 async function sha256Hex(bytes: ArrayBuffer): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', bytes);
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
@@ -44,11 +58,20 @@ function contentDisposition(filename: string): string {
 }
 
 export const documentRoutes = new Hono<AppBindings>()
+  // List the caller's documents (metadata only; blobs fetched via :id).
+  .get('/documents', async (c) => {
+    const rows = await getDb(c.env)
+      .select()
+      .from(documents)
+      .where(eq(documents.userId, c.get('userId')))
+      .all();
+    return c.json({ documents: rows.map(rowToMeta) });
+  })
   // Upload a document: enforce size + MIME, store blob in R2, metadata in D1.
   .post('/documents', async (c) => {
     const body = await c.req.parseBody();
     const file = body['file'];
-    const kindResult = documentKind.safeParse(body['kind']);
+    const kindResult = documentKind.safeParse(parseField(body['kind']));
 
     if (!(file instanceof File)) {
       return c.json({ error: { code: 'invalid_body', message: 'Missing file' } }, 400);

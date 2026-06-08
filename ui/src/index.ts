@@ -11,6 +11,7 @@ export { Box, type BoxProps } from './components/layout/Box';
 export { Text, type TextProps } from './components/layout/Text';
 export { Heading, type HeadingProps } from './components/layout/Heading';
 export { FormRoot, type FormRootProps } from './components/layout/FormRoot';
+export { Frame, type FrameProps } from './components/layout/Frame';
 
 // Generic UI primitives.
 export { Badge, badgeVariants } from './components/ui/badge';
@@ -43,8 +44,17 @@ export {
   FormMessage,
   useFormField,
 } from './components/ui/form';
+export {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from './components/ui/command';
 export { Input } from './components/ui/input';
 export { Label } from './components/ui/label';
+export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from './components/ui/popover';
 export {
   Select,
   SelectContent,
@@ -62,5 +72,6 @@ export {
   TableHeader,
   TableRow,
 } from './components/ui/table';
+export { Spinner } from './components/ui/spinner';
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 export { Textarea } from './components/ui/textarea';

@@ -21,6 +21,7 @@
     "@ts-rest/react-query": "^3.52.1",
     "lucide-react": "^0.469.0",
     "react-hook-form": "^7.54.2",
+    "react-phone-number-input": "^3.4.17",
     "zod": "^3.23.8"
   },
   "peerDependencies": {

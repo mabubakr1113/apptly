@@ -26,7 +26,7 @@ export const buildCsp = ({ nonce, isDev, apiOrigin }: CspOptions): string => {
     `img-src 'self' https://img.clerk.com data:`,
     `font-src 'self' data:`,
     `connect-src 'self' https://clerk-telemetry.com ${CLERK}${api}${devConnect}`,
-    `frame-src 'self' ${CLERK} https://challenges.cloudflare.com`,
+    `frame-src 'self' blob: ${CLERK} https://challenges.cloudflare.com`,
     `worker-src 'self' blob:`,
     `form-action 'self'`,
     `frame-ancestors 'none'`,

@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import type { DocumentMeta } from '@apptly/shared';
 import { Badge, Box, Button, Text } from '@apptly/ui';
-import { Trash2 } from 'lucide-react';
+import { Eye, Trash2 } from 'lucide-react';
 import {
   DOCUMENT_KIND_LABELS,
   DOCUMENT_LIST_COPY,
@@ -9,8 +9,8 @@ import {
 import { formatBytes, formatDate } from '@apptly/features/components/DocumentList/helpers';
 
 export const createDocumentColumns = (
-  onDelete: (id: string) => void,
-  isDeleting: boolean,
+  onPreview: (doc: DocumentMeta) => void,
+  onDelete: (doc: DocumentMeta) => void,
 ): ColumnDef<DocumentMeta>[] => [
   {
     accessorKey: 'kind',
@@ -45,14 +45,22 @@ export const createDocumentColumns = (
     ),
     enableSorting: false,
     cell: ({ row }) => (
-      <Box className="text-right">
+      <Box className="flex justify-end gap-1">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          aria-label={`Preview ${row.original.filename}`}
+          onClick={() => onPreview(row.original)}
+        >
+          <Eye />
+        </Button>
         <Button
           type="button"
           variant="ghost"
           size="icon"
           aria-label={`Delete ${row.original.filename}`}
-          disabled={isDeleting}
-          onClick={() => onDelete(row.original.id)}
+          onClick={() => onDelete(row.original)}
         >
           <Trash2 />
         </Button>

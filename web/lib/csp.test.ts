@@ -10,6 +10,11 @@ describe('buildCsp', () => {
     expect(csp).toContain('clerk.accounts.dev');
   });
 
+  it('allows blob: frames so document previews can render', () => {
+    const csp = buildCsp({ nonce: 'n', isDev: false });
+    expect(csp).toMatch(/frame-src[^;]*blob:/);
+  });
+
   it('allows eval and websockets only in dev', () => {
     const dev = buildCsp({ nonce: 'n', isDev: true });
     const prod = buildCsp({ nonce: 'n', isDev: false });
